@@ -226,7 +226,8 @@ string input_string(const char *prompt) {
     string s;
     for (;;) {
         cout << prompt << flush;
-        if (getline(cin, s)) {
+        getline(cin, s);
+        if (cin && !s.empty()) {
             return s;
         }
         if (cin.eof()) {
@@ -255,6 +256,7 @@ void UI_add(AddrList &list) {
     item->eip = input_string("eip: ");
     item->state = input_string("state: ");
 
+    cout << endl;
     UI_display_single_item(item);
     AL_sorted_insert(list, item);
 }
@@ -289,6 +291,7 @@ void UI_search(const AddrList &list) {
     if (item == nullptr) {
         cout << "No such address" << endl;
     } else {
+        cout << endl;
         UI_display_single_item(item);
     }
 }
