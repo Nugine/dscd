@@ -1,10 +1,10 @@
 #if !defined(_COMMON_HPP)
 #define _COMMON_HPP
 
-#include <iostream>
-#include <string>
 #include <algorithm>
+#include <cassert>
 #include <cmath>
+#include <cstring>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
@@ -18,15 +18,20 @@ template <typename T> T input_number(const char *prompt) {
     for (;;) {
         std::cout << prompt << std::flush;
         std::cin >> n;
-        std::getline(std::cin, s);
-        if (std::cin && s.empty()) {
-            return n;
+        if (std::cin) {
+            std::getline(std::cin, s);
+            if (s.empty()) {
+                return n;
+            } else {
+                continue;
+            }
         }
         if (std::cin.eof()) {
             std::cerr << "fatal error: stdin eof" << std::endl;
             exit(1);
         }
         std::cin.clear();
+        std::getline(std::cin, s);
     }
 }
 
