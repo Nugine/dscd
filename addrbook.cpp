@@ -4,6 +4,8 @@
 #include <string>
 using namespace std;
 
+#include "common.hpp"
+
 struct AddrItem {
     string name;   // 姓名
     string street; // 街道
@@ -220,22 +222,6 @@ const bool AL_load(const string &path, AddrList &rv_list) {
         AL_push(rv_list, item);
     }
     return true;
-}
-
-string input_string(const char *prompt) {
-    string s;
-    for (;;) {
-        cout << prompt << flush;
-        getline(cin, s);
-        if (cin && !s.empty()) {
-            return s;
-        }
-        if (cin.eof()) {
-            cerr << "fatal error: stdin eof" << endl;
-            exit(1);
-        }
-        cin.clear();
-    }
 }
 
 void UI_display_single_item(const AddrItem *const item) {
