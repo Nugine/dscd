@@ -1,14 +1,5 @@
-#include <algorithm>
-#include <cmath>
-#include <fstream>
-#include <iomanip>
-#include <iostream>
-#include <queue>
-#include <string>
-#include <vector>
-using namespace std;
-
 #include "common.hpp"
+using namespace std;
 
 struct Position {
     double x, y;

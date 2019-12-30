@@ -3,10 +3,18 @@
 
 #include <iostream>
 #include <string>
+#include <algorithm>
+#include <cmath>
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <queue>
+#include <string>
+#include <vector>
 
 template <typename T> T input_number(const char *prompt) {
     T n;
-    string s;
+    std::string s;
     for (;;) {
         std::cout << prompt << std::flush;
         std::cin >> n;
@@ -25,7 +33,7 @@ template <typename T> T input_number(const char *prompt) {
 template <typename T>
 T input_number(const char *prompt, const T lowbd, const T upbd) {
     T n;
-    string s;
+    std::string s;
     for (;;) {
         std::cout << prompt << std::flush;
         std::cin >> n;

@@ -1,10 +1,5 @@
-#include <fstream>
-#include <iomanip>
-#include <iostream>
-#include <string>
-using namespace std;
-
 #include "common.hpp"
+using namespace std;
 
 struct AddrItem {
     string name;   // 姓名
