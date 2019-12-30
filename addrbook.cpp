@@ -319,6 +319,7 @@ void UI_load(AddrList &rv_list) {
 int main() {
     AddrList list = AL_new();
 
+    string s;
     for (;;) {
         cout << "Address book system" << endl;
         cout << "1. Add a new address" << endl;
@@ -329,37 +330,27 @@ int main() {
         cout << "6. Save address book to file" << endl;
         cout << "7. Exit" << endl;
 
-        cout << "System call number:";
-        int no;
-        cin >> no;
-        string s;
-        getline(cin, s);
-        if (cin) {
-            cout << endl;
-            if (no == 1) {
-                UI_add(list);
-            } else if (no == 2) {
-                UI_delete(list);
-            } else if (no == 3) {
-                UI_search(list);
-            } else if (no == 4) {
-                UI_display(list);
-            } else if (no == 5) {
-                UI_load(list);
-            } else if (no == 6) {
-                UI_save(list);
-            } else if (no == 7) {
-                break;
-            }
+        const int no = input_number<int>("System call number: ", 1, 8);
 
-            getline(cin, s);
-            cout << endl;
+        cout << endl;
+        if (no == 1) {
+            UI_add(list);
+        } else if (no == 2) {
+            UI_delete(list);
+        } else if (no == 3) {
+            UI_search(list);
+        } else if (no == 4) {
+            UI_display(list);
+        } else if (no == 5) {
+            UI_load(list);
+        } else if (no == 6) {
+            UI_save(list);
+        } else if (no == 7) {
+            break;
         }
-        if (cin.eof()) {
-            cerr << "fatal error: stdin eof" << endl;
-            exit(1);
-        }
-        cin.clear();
+
+        getline(cin, s);
+        cout << endl;
     }
     cout << "Good bye" << endl;
 }
