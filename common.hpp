@@ -11,6 +11,9 @@
 #include <queue>
 #include <string>
 #include <vector>
+#include <cstdlib>
+#include <ctime>
+#include <chrono>
 
 template <typename T> T input_number(const char *prompt) {
     T n;
