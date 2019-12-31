@@ -25,11 +25,14 @@ int main() {
     constexpr size_t MAXN = 30000;
     static int arr[MAXN + 7];
     static int buf[MAXN + 7];
+    static int ans[MAXN + 7];
 
     srand(time(nullptr));
 
     for (size_t n = 500; n <= MAXN; n += 500) {
         rand_fill(arr, n);
+        memcpy(ans, arr, sizeof(arr));
+        sort(ans, ans + n);
 
         vector<Record> records;
 
@@ -45,19 +48,26 @@ int main() {
             unsigned long long t = d.count();
 
             records.push_back({name, t, cmp_count});
+
+            if (memcmp(buf, ans, sizeof(int) * n) != 0) {
+                cerr << "incorrect algorithm: " << name << endl;
+                exit(1);
+            }
         }
+
+        constexpr size_t W = 20;
 
         cout << "Round #" << (n / 500) << " ";
         cout << "n = " << n << endl;
-        cout << left << setw(16) << "name";
-        cout << left << setw(16) << "time";
-        cout << left << setw(16) << "cmp count";
+        cout << left << setw(W) << "name";
+        cout << left << setw(W) << "time";
+        cout << left << setw(W) << "cmp count";
         cout << endl;
         for (const auto &rc : records) {
-            cout << left << setw(16) << rc.name;
-            cout << left << setw(16)
+            cout << left << setw(W) << rc.name;
+            cout << left << setw(W)
                  << (to_string(rc.nanoseconds / 1.0e6) + "ms");
-            cout << left << setw(16) << rc.cmp_count;
+            cout << left << setw(W) << rc.cmp_count;
             cout << endl;
         }
         cout << endl;
