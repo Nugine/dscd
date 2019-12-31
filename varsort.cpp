@@ -55,19 +55,17 @@ int main() {
             }
         }
 
-        constexpr size_t W = 20;
-
         cout << "Round #" << (n / 500) << " ";
         cout << "n = " << n << endl;
-        cout << left << setw(W) << "name";
-        cout << left << setw(W) << "time";
-        cout << left << setw(W) << "cmp count";
+        cout << left << setw(20) << "name";
+        cout << left << setw(14) << "     time";
+        cout << right << setw(14) << "cmp count";
         cout << endl;
         for (const auto &rc : records) {
-            cout << left << setw(W) << rc.name;
-            cout << left << setw(W)
-                 << (to_string(rc.nanoseconds / 1.0e6) + "ms");
-            cout << left << setw(W) << rc.cmp_count;
+            cout << left << setw(20) << rc.name;
+            cout << right << setw(11) << to_string(rc.nanoseconds / 1.0e6)
+                 << " ms";
+            cout << right << setw(14) << rc.cmp_count;
             cout << endl;
         }
         cout << endl;
