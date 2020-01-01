@@ -10,19 +10,23 @@ const size_t isbn_hash(const ISBN &isbn) {
     size_t s = 0;
     size_t t = 0;
     for (auto c : isbn) {
-        if (isdigit(c)) {
-            state += 1;
-            if (state == 5) {
-                t = 0;
-                s += t;
-                state = 1;
-            }
-            t = t * 10 + (c - '0');
+        state += 1;
+        if (state == 5) {
+            t = 0;
+            s += t;
+            state = 1;
         }
+        t = t * 10 + (c % 10);
     }
     s += t;
     return s % HASHSIZE;
 }
+
+struct BorrowRecord {
+    string token;
+    string date;
+    string isbn;
+};
 
 struct Book {
     string isbn;
@@ -30,6 +34,8 @@ struct Book {
     string author;
     size_t total;
     size_t available;
+
+    vector<BorrowRecord *> records;
 };
 
 class HashTable {
@@ -112,15 +118,8 @@ class HashTable {
     }
 };
 
-struct BorrowRecord {
-    string token;
-    string date;
-    string isbn;
-};
-
 struct Library {
     HashTable table;
-    vector<BorrowRecord *> records;
 };
 
 void UI_add_book(Library &lib) {
@@ -130,7 +129,8 @@ void UI_add_book(Library &lib) {
     Book *book = lib.table.search(isbn);
     if (book) {
         cout << "the book already exists" << endl;
-        const size_t amt = input_number<size_t>("the amount of books: ");
+        const size_t amt =
+            input_number<size_t>("the amount of books: ", 0, 0xffffffff);
         book->total += amt;
         return;
     }
@@ -139,7 +139,7 @@ void UI_add_book(Library &lib) {
     book->isbn = std::move(isbn);
     book->name = input_string("name: ");
     book->author = input_string("author: ");
-    book->total = input_number<size_t>("total: ");
+    book->total = input_number<size_t>("total: ", 0, 0xffffffff);
     book->available = book->total;
     lib.table.insert(book->isbn, book);
 }
@@ -164,7 +164,7 @@ void UI_borrow(Library &lib) {
     record->date = input_string("date: ");
 
     book->available -= 1;
-    lib.records.push_back(record);
+    book->records.push_back(record);
 
     cout << "Borrowed" << endl;
 }
@@ -181,11 +181,11 @@ void UI_return(Library &lib) {
 
     string token = input_string("token: ");
 
-    for (auto i = lib.records.begin(); i != lib.records.end(); ++i) {
+    for (auto i = book->records.begin(); i != book->records.end(); ++i) {
         const BorrowRecord &record = **i;
         if (record.isbn == isbn && record.token == token) {
             delete *i;
-            lib.records.erase(i);
+            book->records.erase(i);
             book->available += 1;
             cout << "Returned" << endl;
             return;
