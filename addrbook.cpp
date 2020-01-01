@@ -344,7 +344,6 @@ int main() {
             break;
         }
 
-        getline(cin, s);
         cout << endl;
     }
     cout << "Good bye" << endl;

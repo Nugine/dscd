@@ -3,8 +3,6 @@ using namespace std;
 using std::chrono::duration;
 using std::chrono::steady_clock;
 
-void rand_fill(int arr[], const size_t n) {}
-
 static size_t cmp_count = 0;
 bool cmp(const int lhs, const int rhs) {
     cmp_count += 1;
@@ -33,9 +31,7 @@ int main() {
     fstream file;
     random_device rnd;
 
-    if (no == 1) {
-        srand(time(nullptr));
-    } else if (no == 2) {
+    if (no == 2) {
         const string path = input_string("file path: ");
         file.open(path);
         if (!file) {
@@ -75,7 +71,10 @@ int main() {
 
         vector<Record> records;
 
-        for (auto [name, fn] : sort_methods) {
+        for (const auto &pr : sort_methods) {
+            auto name = pr.first;
+            auto fn = pr.second;
+
             memcpy(buf, arr, sizeof(arr));
             cmp_count = 0;
 
