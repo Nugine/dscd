@@ -55,6 +55,11 @@ int main() {
             }
         }
 
+        std::sort(records.begin(), records.end(),
+                  [](const Record &lhs, const Record &rhs) {
+                      return lhs.nanoseconds < rhs.nanoseconds;
+                  });
+
         cout << "Round #" << (n / 500) << " ";
         cout << "n = " << n << endl;
         cout << left << setw(20) << "name";
