@@ -3,11 +3,7 @@ using namespace std;
 using std::chrono::duration;
 using std::chrono::steady_clock;
 
-void rand_fill(int arr[], const size_t n) {
-    for (size_t i = 0; i < n; ++i) {
-        arr[i] = rand();
-    }
-}
+void rand_fill(int arr[], const size_t n) {}
 
 static size_t cmp_count = 0;
 bool cmp(const int lhs, const int rhs) {
@@ -27,10 +23,53 @@ int main() {
     static int buf[MAXN + 7];
     static int ans[MAXN + 7];
 
-    srand(time(nullptr));
+    cout << "sort algorithm benchmark" << endl;
+    cout << "data source:" << endl;
+    cout << "1. random" << endl;
+    cout << "2. file" << endl;
 
-    for (size_t n = 500; n <= MAXN; n += 500) {
-        rand_fill(arr, n);
+    const int no = input_number<int>("source number: ", 1, 3);
+
+    fstream file;
+    random_device rnd;
+
+    if (no == 1) {
+        srand(time(nullptr));
+    } else if (no == 2) {
+        const string path = input_string("file path: ");
+        file.open(path);
+        if (!file) {
+            cerr << "fatal error: can not open file \"" << path << "\"" << endl;
+            exit(1);
+        }
+    }
+
+    for (size_t n = 1000; n <= MAXN; n += 1000) {
+        cout << "Round #" << (n / 500) << " ";
+        cout << "n = " << n << endl;
+
+        if (no == 1) {
+            for (size_t i = 0; i < n; ++i) {
+                arr[i] = static_cast<int>(rnd());
+            }
+        } else {
+#ifdef DEBUG
+            cout << "reading..." << endl;
+#endif
+
+            for (size_t i = 0; i < n; ++i) {
+                file >> arr[i];
+            }
+            if (!file) {
+                cerr << "fatal error: file format error" << endl;
+                exit(1);
+            }
+
+#ifdef DEBUG
+            cout << "loaded" << endl;
+#endif
+        }
+
         memcpy(ans, arr, sizeof(arr));
         sort(ans, ans + n);
 
@@ -40,6 +79,9 @@ int main() {
             memcpy(buf, arr, sizeof(arr));
             cmp_count = 0;
 
+#ifdef DEBUG
+            cout << "run " << name << endl;
+#endif
             const auto start = steady_clock::now();
             fn(buf, n, cmp);
             const auto end = steady_clock::now();
@@ -55,13 +97,15 @@ int main() {
             }
         }
 
+#ifdef DEBUG
+        cout << "completed" << endl;
+#endif
+
         std::sort(records.begin(), records.end(),
                   [](const Record &lhs, const Record &rhs) {
                       return lhs.nanoseconds < rhs.nanoseconds;
                   });
 
-        cout << "Round #" << (n / 500) << " ";
-        cout << "n = " << n << endl;
         cout << left << setw(20) << "name";
         cout << left << setw(14) << "     time";
         cout << right << setw(14) << "cmp count";

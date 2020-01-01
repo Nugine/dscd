@@ -201,6 +201,10 @@ void radix_sort(int arr[], const size_t len, cmp_fn lt) {
     }
     constexpr size_t INF = size_t(-1);
 
+#ifdef DEBUG
+    std::cout << "radix_sort: begin" << std::endl;
+#endif
+
     size_t *next = new size_t[len];
     int max_digits = 0;
     for (size_t i = 0; i < len; ++i) {
@@ -209,15 +213,25 @@ void radix_sort(int arr[], const size_t len, cmp_fn lt) {
     }
     next[len - 1] = INF;
 
-    size_t f[10];
-    size_t e[10];
+#ifdef DEBUG
+    std::cout << "radix_sort: start rounds, max_digits = " << max_digits
+              << std::endl;
+#endif
+
+    size_t _f[19];
+    size_t *f = &_f[9];
+    size_t _e[19];
+    size_t *e = &_e[9];
     size_t h = 0;
 
     for (int round = 0; round < max_digits; ++round) {
-        for (auto &p : f) {
+#ifdef DEBUG
+        std::cout << "radix_sort: round = " << round << std::endl;
+#endif
+        for (auto &p : _f) {
             p = INF;
         }
-        for (auto &p : e) {
+        for (auto &p : _e) {
             p = INF;
         }
         for (size_t p = h; p != INF; p = next[p]) {
@@ -238,7 +252,7 @@ void radix_sort(int arr[], const size_t len, cmp_fn lt) {
 
         h = INF;
         size_t t = INF;
-        int i = 0;
+        int i = -9;
         for (; i < 10; ++i) {
             if (f[i] != INF) {
                 h = f[i];
@@ -253,6 +267,18 @@ void radix_sort(int arr[], const size_t len, cmp_fn lt) {
             }
         }
         next[t] = INF;
+
+#ifdef DEBUG
+        std::cout << "radix_sort: round  = " << round << " list = [";
+        size_t cnt = 0;
+        for (size_t p = h; p != INF; p = next[p]) {
+            assert(p < len);
+            std::cout << arr[p] << ", ";
+            ++cnt;
+            assert(cnt <= len);
+        }
+        std::cout << "]" << std::endl;
+#endif
     }
 
     size_t *adr = next;
