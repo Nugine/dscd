@@ -14,6 +14,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <chrono>
+#include <random>
 
 template <typename T> T input_number(const char *prompt) {
     T n;
