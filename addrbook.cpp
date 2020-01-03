@@ -229,17 +229,25 @@ void UI_display_single_item(const AddrItem *const item) {
 }
 
 void UI_add(AddrList &list) {
-    AddrItem *item = new AddrItem;
     cout << "New address:" << endl;
-    item->name = input_string("name: ");
+    auto name = input_string("name: ");
+
+    if (AL_search(list, name)) {
+        cout << "the address already exists" << endl;
+        return;
+    }
+
+    AddrItem *item = new AddrItem;
+    item->name = std::move(name);
     item->street = input_string("street: ");
     item->city = input_string("city: ");
     item->eip = input_string("eip: ");
     item->state = input_string("state: ");
 
-    cout << endl;
     UI_display_single_item(item);
-    AL_sorted_insert(list, item);
+    if (!AL_sorted_insert(list, item)) {
+        delete item;
+    }
 }
 
 void UI_display(const AddrList &list) {
@@ -344,6 +352,7 @@ int main() {
             break;
         }
 
+        getline(cin, s);
         cout << endl;
     }
     cout << "Good bye" << endl;
