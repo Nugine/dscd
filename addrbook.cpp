@@ -81,6 +81,10 @@ const bool AL_sorted_insert(AddrList &list, AddrItem *const item) {
     node->next->prev = node;
     list.len += 1;
 
+    if (iter == list.head) {
+        list.head = node;
+    }
+
     return true;
 }
 
