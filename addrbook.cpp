@@ -355,5 +355,7 @@ int main() {
         getline(cin, s);
         cout << endl;
     }
+
+    AL_release(list);
     cout << "Good bye" << endl;
 }
