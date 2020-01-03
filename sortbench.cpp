@@ -41,7 +41,7 @@ int main() {
     }
 
     for (size_t n = 1000; n <= MAXN; n += 1000) {
-        cout << "Round #" << (n / 500) << " ";
+        cout << "Round #" << (n / 1000) << " ";
         cout << "n = " << n << endl;
 
         if (no == 1) {
