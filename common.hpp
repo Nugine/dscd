@@ -26,7 +26,9 @@ T input_number(const char *prompt, const T lowbd, const T upbd) {
         if (getline(std::cin, s)) {
             std::stringstream ss(s);
             if (ss >> n && lowbd <= n && n < upbd) {
-                return n;
+                if (!(ss >> s)) {
+                    return n;
+                }
             }
         }
         if (std::cin.eof()) {
